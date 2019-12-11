@@ -56,6 +56,22 @@ zeebe.client.security.plaintext=true
 
 For a full set of configuration options please see [ZeebeClientConfigurationProperties.java](blob/master/client/spring-zeebe-starter/src/main/java/io/zeebe/spring/client/properties/ZeebeClientConfigurationProperties.java)
 
+## Configuring Camunda Cloud Connection
+
+This example uses a yaml-based configuration:
+```yaml
+zeebe:
+  worker:
+    name: foo-worker
+  client:
+    broker:
+      contactPoint: your-cluster-id.zeebe.camunda.io:443
+    security:
+      clientId: your-client-id
+      clientSecret: your-client-secret
+      audience: your-cluster-id.zeebe.camunda.io
+```
+
 ## Add Spring Boot Starter to Your Project
 
 Just add the following Maven dependency to your Spring Boot Starter project:

@@ -7,4 +7,5 @@ public interface ZeebeClientProperties extends ZeebeClientConfiguration {
   default boolean isAutoStartup() {
     return true;
   }
+
 }

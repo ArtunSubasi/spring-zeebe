@@ -33,6 +33,7 @@ public class ZeebeClientStarterAutoConfiguration {
     builder.caCertificatePath(configurationProperties.getCaCertificatePath());
     if (configurationProperties.isPlaintextConnectionEnabled())
       builder.usePlaintext();
+    builder.credentialsProvider(configurationProperties.getCredentialsProvider());
     return builder;
   }
 }

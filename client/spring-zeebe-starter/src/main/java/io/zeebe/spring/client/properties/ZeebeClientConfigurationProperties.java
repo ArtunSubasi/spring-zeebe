@@ -2,16 +2,17 @@ package io.zeebe.spring.client.properties;
 
 import static io.zeebe.spring.client.config.ZeebeClientSpringConfiguration.DEFAULT;
 
+import io.zeebe.client.CredentialsProvider;
 import java.time.Duration;
-
+import lombok.Data;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-import io.zeebe.client.CredentialsProvider;
-import lombok.Data;
-
 @Data
 @ConfigurationProperties(prefix = "zeebe.client")
+@Slf4j
 public class ZeebeClientConfigurationProperties implements ZeebeClientProperties {
 
   @NestedConfigurationProperty
@@ -55,9 +56,39 @@ public class ZeebeClientConfigurationProperties implements ZeebeClientProperties
   }
 
   @Data
-  public static class Security{
+  public static class Security {
     private boolean plaintext = DEFAULT.isPlaintextConnectionEnabled();
     private String certPath = DEFAULT.getCaCertificatePath();
+
+    /** The client ID used to request an access token from the authorization server. */
+    private String clientId;
+
+    /** The client secret used to request an access token from the authorization server. */
+    @ToString.Exclude
+    private String clientSecret;
+
+    /** The address for which the token should be valid. */
+    private String audience;
+
+    /** The URL of the authorization server from which the access token will be requested. */
+    private String authorizationServerUrl;
+
+    /** The path to a cache file where the access tokens will be stored. */
+    private String credentialsCachePath;
+
+    public CredentialsProvider getCredentialsProvider() {
+      if (clientId != null && clientSecret != null) {
+        log.debug("Client ID and secret are configured. Creating OAuthCredientialsProvider with: {}", this);
+        return CredentialsProvider.newCredentialsProviderBuilder()
+          .clientId(clientId)
+          .clientSecret(clientSecret)
+          .audience(audience)
+          .authorizationServerUrl(authorizationServerUrl)
+          .credentialsCachePath(credentialsCachePath)
+          .build();
+      }
+      return null;
+    }
   }
 
   @Override
@@ -112,7 +143,7 @@ public class ZeebeClientConfigurationProperties implements ZeebeClientProperties
 
   @Override
   public CredentialsProvider getCredentialsProvider() {
-    return null;
+    return security.getCredentialsProvider();
   }
-  
+
 }

@@ -60,7 +60,7 @@ public class ZeebeClientSpringConfigurationDefaultPropertiesTest {
     assertThat(properties.getNumJobWorkerExecutionThreads()).isEqualTo(1);
   }
 
-  @Test 
+  @Test
   public void hasMessageTimeToLeave() throws Exception {
     assertThat(properties.getDefaultMessageTimeToLive()).isEqualTo(Duration.ofSeconds(3600));
   }
@@ -73,6 +73,36 @@ public class ZeebeClientSpringConfigurationDefaultPropertiesTest {
   @Test
   public void hasSecurityCertificatePath() throws Exception {
     assertThat(properties.getCaCertificatePath()).isNull();
+  }
+
+  @Test
+  public void hasSecurityClientId() throws Exception {
+    assertThat(properties.getSecurity().getClientId()).isNull();
+  }
+
+  @Test
+  public void hasSecurityClientSecret() throws Exception {
+    assertThat(properties.getSecurity().getClientSecret()).isNull();
+  }
+
+  @Test
+  public void hasSecurityAudience() throws Exception {
+    assertThat(properties.getSecurity().getAudience()).isNull();
+  }
+
+  @Test
+  public void hasSecurityAuthorizationServerUrl() throws Exception {
+    assertThat(properties.getSecurity().getAuthorizationServerUrl()).isNull();
+  }
+
+  @Test
+  public void hasSecurityCredentialsCachePath() throws Exception {
+    assertThat(properties.getSecurity().getCredentialsCachePath()).isNull();
+  }
+
+  @Test
+  public void getCredentialsProvider() throws Exception {
+    assertThat(properties.getCredentialsProvider()).isNull();
   }
 
 }

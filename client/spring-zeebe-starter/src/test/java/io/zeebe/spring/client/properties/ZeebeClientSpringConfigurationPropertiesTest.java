@@ -3,7 +3,6 @@ package io.zeebe.spring.client.properties;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Duration;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,12 @@ import org.springframework.test.context.junit4.SpringRunner;
     "zeebe.client.worker.threads=99",
     "zeebe.client.message.timeToLive=99s",
     "zeebe.client.security.certpath=aPath",
-    "zeebe.client.security.plaintext=true"
+    "zeebe.client.security.plaintext=true",
+    "zeebe.client.security.clientId=someId",
+    "zeebe.client.security.clientSecret=someSecret",
+    "zeebe.client.security.audience=someAudience",
+    "zeebe.client.security.authorizationServerUrl=https://auth",
+    "zeebe.client.security.credentialsCachePath=$HOME/.camunda/accessTokens"
   }
 )
 @ContextConfiguration(classes = ZeebeClientSpringConfigurationPropertiesTest.TestConfig.class)
@@ -87,6 +91,36 @@ public class ZeebeClientSpringConfigurationPropertiesTest {
   @Test
   public void hasSecurityCertificatePath() throws Exception {
     assertThat(properties.getSecurity().getCertPath()).isEqualTo("aPath");
+  }
+
+  @Test
+  public void hasSecurityClientId() throws Exception {
+    assertThat(properties.getSecurity().getClientId()).isEqualTo("someId");
+  }
+
+  @Test
+  public void hasSecurityClientSecret() throws Exception {
+    assertThat(properties.getSecurity().getClientSecret()).isEqualTo("someSecret");
+  }
+
+  @Test
+  public void hasSecurityAudience() throws Exception {
+    assertThat(properties.getSecurity().getAudience()).isEqualTo("someAudience");
+  }
+
+  @Test
+  public void hasSecurityAuthorizationServerUrl() throws Exception {
+    assertThat(properties.getSecurity().getAuthorizationServerUrl()).isEqualTo("https://auth");
+  }
+
+  @Test
+  public void hasSecurityCredentialsCachePath() throws Exception {
+    assertThat(properties.getSecurity().getCredentialsCachePath()).isEqualTo("$HOME/.camunda/accessTokens");
+  }
+
+  @Test
+  public void getCredentialsProvider() throws Exception {
+    assertThat(properties.getCredentialsProvider()).isNotNull();
   }
 
 }
